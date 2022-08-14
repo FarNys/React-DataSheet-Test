@@ -1,5 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+
+import axios from "axios";
 import { baseUrl, token } from "../../../api/api";
 import {
   DataSheetGrid,
@@ -10,18 +11,31 @@ import {
   dateColumn,
   floatColumn,
   CellProps,
+  AddRowsComponentProps,
 } from "react-datasheet-grid";
+import { useDispatch, useSelector } from "react-redux";
 import { selectColumn } from "../WorkflowNew/SelectComponents";
+import { customeDateComponent } from "../DateComponent";
+import {
+  getTableData,
+  saveActiveCell,
+  sendTableData,
+} from "../../../store/datasheetSlice";
 
-const workflowId = 3;
-const workId = 1;
+const workflowId = 7;
+const workId = 4;
 
 const RealWork = () => {
+  const dispatch = useDispatch();
+  const myData = useSelector((state) => state.datasheetSlice);
   const checkList = ["created_at", "updated_at", "id", "name"];
   const [columnsTitle, setcolumnsTitle] = useState(null);
   const [columnsType, setcolumnsType] = useState(null);
+  const [columnsDefault, setcolumnsDefault] = useState(null);
+  console.log(myData);
+
   //GET TITLE OF COLUMNS
-  console.log(dateColumn);
+  // console.log(dateColumn);
   useEffect(() => {
     axios({
       method: "get",
@@ -31,10 +45,11 @@ const RealWork = () => {
       },
     })
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         const data = res.data;
         let titleObject = {};
         let titleType = {};
+        let titleDefault = {};
         for (let i = 1; i < 37; i++) {
           const col = data[`c${i}`];
           if (col) {
@@ -51,11 +66,19 @@ const RealWork = () => {
             };
             titleType = { ...titleType, ...y };
             setcolumnsType(titleType);
+
+            //KEY-VALUE PAIR FOR TABLE DEFAULT COLUMN DATA FOR EVERY CELL
+            const z = {
+              [`c${i}`]: data[`c${i}_default`],
+            };
+            titleDefault = { ...titleDefault, ...z };
+            setcolumnsDefault(titleDefault);
           }
         }
       })
       .catch((err) => console.log(err));
   }, []);
+  console.log(columnsDefault);
   //GET TABLE ACCESS LIST BASED ON SELECTED STATION
   const [colAccess, setcolAccess] = useState(null);
   useEffect(() => {
@@ -85,20 +108,43 @@ const RealWork = () => {
 
   //CREATE DIFFERENT TYPE OF COLUMNS
   const [columnsData, setcolumnsData] = useState([]);
-  const findColType = (item, key) => {
-    console.log(item[key]);
-    // if (item[key] === 1) {
-    //   return selectColumn({});
-    // }
-    // if (item[key] === 2) {
-    //   return floatColumn;
-    // }
-    // if (item[key] === 3) {
-    //   return dateColumn;
-    // }
-    // if (item[key] === 4) {
-    //   return checkboxColumn;
-    // }
+  const findColType = (item, key, data, cell) => {
+    console.log(data, cell);
+    if (item[key] === 1) {
+      let emptyList = [];
+      const defaultListValue = columnsDefault[key]?.includes(",")
+        ? columnsDefault[key].split(",")
+        : null;
+      if (defaultListValue) {
+        defaultListValue.forEach((el) => {
+          const x = {
+            label: el.slice(0, 1).toUpperCase() + el.slice(1, el.length),
+            value: el,
+          };
+          emptyList.push(x);
+        });
+      }
+      console.log(emptyList);
+      return selectColumn(emptyList);
+    }
+    if (item[key] === 2) {
+      return floatColumn;
+    }
+    if (item[key] === 3) {
+      console.log(data);
+      const cloneTableData = [...tableData];
+      console.log(cell);
+      const cloneactiveCell = { ...activeCell };
+      return customeDateComponent({
+        item,
+        key,
+        tableData: cloneTableData,
+        activeCell: cloneactiveCell,
+      });
+    }
+    if (item[key] === 4) {
+      return checkboxColumn;
+    }
     return textColumn;
   };
   //BIND COLUMN TYPE TO KEYCOLUMN(PACKAGE FORM OF DATA)
@@ -107,8 +153,13 @@ const RealWork = () => {
       let emptyList = [];
       for (const key in columnsTitle) {
         const x = {
-          ...keyColumn(key, findColType(columnsType, key)),
+          ...keyColumn(
+            key,
+            findColType(columnsType, key, tableData, activeCell)
+          ),
           title: columnsTitle[key],
+          cellClassName: columnsType[key] === 3 ? "test_test" : "",
+          // maxWidth: 25,
         };
         emptyList.push(x);
       }
@@ -119,30 +170,41 @@ const RealWork = () => {
   //TABLE DATA
   const [tableData, settableData] = useState([]);
   const [tableDataDefault, settableDataDefault] = useState([]);
+  console.log(tableData);
 
   //GET INITIAL TABLE DATA
   useEffect(() => {
-    if (columnsTitle) {
-      axios({
-        method: "get",
-        url: `${baseUrl}/api/v1/workflow/table-row/?work=${workId}`,
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          const data = res.data.results;
-          settableData(data);
-          settableDataDefault(data);
+    const fetchData = async () => {
+      if (columnsTitle) {
+        axios({
+          method: "get",
+          url: `${baseUrl}/api/v1/workflow/table-row/?work=${workId}`,
+          headers: {
+            Authorization: `Token ${token}`,
+          },
         })
-        .catch((err) => console.log(err));
-    }
+          .then((res) => {
+            console.log(res);
+            const data = res.data.results;
+            settableData(data);
+            settableDataDefault(data);
+          })
+          .catch((err) => console.log(err));
+      }
+    };
+    fetchData();
+    // const interval = setInterval(() => {
+    //   fetchData();
+    // }, 5000);
+    // return () => {
+    //   clearInterval(interval);
+    // };
   }, [columnsTitle]);
 
   //CHANGE DATA GRID HANDLING
   const changeHandler = (newValue, operations) => {
     // setdata(newValue);
+    console.log(operations);
     for (const operation of operations) {
       if (operation.type === "CREATE") {
         axios({
@@ -152,7 +214,7 @@ const RealWork = () => {
             Authorization: `Token ${token}`,
           },
           data: {
-            work: 1,
+            work: workId,
           },
         })
           .then((res) => {
@@ -164,6 +226,9 @@ const RealWork = () => {
       }
 
       if (operation.type === "UPDATE") {
+        console.log("UPDATED !!!");
+        console.log(operation, activeCell);
+        // if(activeCell.colId)
         //TEST LOOP CHANGE TO GET CHANGED VALUE
         //IT WILL TRIGGER WITH EVERY TYPE WE SHOULD CHECK IF THE CHANGED VALUE IS CHECKBOX OR NOT!(ALSO FOR DATE)
         // const cloneValue = [...newValue];
@@ -206,6 +271,14 @@ const RealWork = () => {
           for (let i = startIndex; i < endIndex + 1; i++) {
             const updatedData = newValue[i];
             console.log(updatedData);
+            for (const key in updatedData) {
+              if (updatedData[key] === false) {
+                updatedData[key] = "false";
+              }
+              if (updatedData[key] === true) {
+                updatedData[key] = "true";
+              }
+            }
             // console.log(updatedData);
             axios({
               method: "put",
@@ -225,6 +298,7 @@ const RealWork = () => {
           settableData(newValue);
         } else {
           settableData(newValue);
+          console.log(newValue);
         }
       }
     }
@@ -246,15 +320,71 @@ const RealWork = () => {
     // console.log(e);
     setselectedCells(e.selection);
   };
+  console.log(tableData);
+  //STATE OF CURRENT CELL TO CHECK FOR CONDITION OF CHECKBOX UPDATE AND THEN UPDATE IN USEEFFECT
+  const [activeCell, setactiveCell] = useState(null);
   const activeChangeHandler = (e) => {
     console.log(e);
+    console.log(tableData);
+    setactiveCell(e);
+    console.log(tableData);
+    dispatch(saveActiveCell({ data: e, tableData: tableData }));
+    console.log("ACTIVE CHANGED");
+
+    //FIND SELECTED ROW BASED ON SELECTED ROW
   };
+
+  //GET CURENT ACTIVE CELL TO EXPLOIT SELECTED ROW AND SEND TROUGH REDUX TO DATE COMPONENT TO UPDATE AFTER FOCUS OUT IN DATE COMPONENT
+  useEffect(() => {
+    if (activeCell) {
+      dispatch(sendTableData({ tableData: tableData }));
+    }
+  }, [activeCell?.cell?.col, activeCell?.col?.row]);
+
+  // useEffect(() => {
+  //   if (activeCell && columnsType) {
+  //     // console.log(tableData);
+  //     let updatedData;
+  //     console.log(activeCell);
+  //     console.log(columnsType);
+  //     if (columnsType[activeCell?.cell?.colId] === 4) {
+  //       console.log("Checkbox Selected");
+  //       updatedData = tableData[activeCell.cell.row];
+
+  //       for (const key in updatedData) {
+  //         if (updatedData[key] === false) {
+  //           updatedData[key] = "false";
+  //           console.log("fals ing");
+  //         }
+  //         if (updatedData[key] === true) {
+  //           updatedData[key] = "true";
+  //           console.log("true ing");
+  //         }
+  //       }
+  //       console.log(tableData);
+  //       console.log(updatedData);
+  //       axios({
+  //         method: "put",
+  //         url: `${baseUrl}/api/v1/workflow/table-row/${updatedData.id}/?work=${workId}`,
+  //         headers: {
+  //           Authorization: `Token ${token}`,
+  //         },
+  //         data: {
+  //           ...updatedData,
+  //         },
+  //       })
+  //         .then((res) => {
+  //           console.log(res);
+  //         })
+  //         .catch((err) => console.log(err));
+  //     }
+  //   }
+  // }, [activeCell?.cell?.row, activeCell?.cell?.colId, columnsType]);
 
   useEffect(() => {
     if (changedCell.col !== "" && changedCell.row !== "") {
-      let updatedCell;
-      // console.log(first)
-      // if (colAccess[changedCell.colId] === 1) {
+      // let updatedCell;
+      // if (colAccess[changedCell.colId] === 4) {
       //   updatedCell = tableData[changedCell.row][changedCell.colId];
       //   console.log(updatedCell);
       // }
@@ -262,6 +392,14 @@ const RealWork = () => {
         ...tableData[changedCell.row],
         // [changedCell.colId]: updatedCell ? 1 : 0,
       };
+      for (const key in updatedData) {
+        if (updatedData[key] === false) {
+          updatedData[key] = "false";
+        }
+        if (updatedData[key] === true) {
+          updatedData[key] = "true";
+        }
+      }
       console.log(updatedData);
       // console.log(updatedData);
       axios({
@@ -279,6 +417,30 @@ const RealWork = () => {
         .catch((err) => console.log(err));
     }
   }, [changedCell.row, changedCell.col]);
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log("RETURN DATA");
+  //     for (let i = 0; i < tableData.length; i++) {
+  //       const updatedData = tableData[i];
+  //       axios({
+  //         method: "put",
+  //         url: `${baseUrl}/api/v1/workflow/table-row/${updatedData.id}/?work=${workId}`,
+  //         headers: {
+  //           Authorization: `Token ${token}`,
+  //         },
+  //         data: {
+  //           ...updatedData,
+  //         },
+  //       })
+  //         .then((res) => console.log(res))
+  //         .catch((err) => console.log(err));
+  //     }
+  //   };
+  // }, [columnsType]);
+  const focusHandler = (e) => {
+    console.log(e);
+  };
   return (
     <div>
       <h2>Real Work</h2>
@@ -291,7 +453,11 @@ const RealWork = () => {
           columns={columnsData}
           onSelectionChange={selectionChangeHandler}
           onActiveCellChange={activeChangeHandler}
+          onFocus={focusHandler}
           rowKey="id"
+          disableExpandSelection={true}
+          disableContextMenu={true}
+          // addRowsComponent={addRowHandler}
         />
       ) : (
         <p>Loading . . . Or No Data</p>

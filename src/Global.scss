@@ -4,7 +4,53 @@
   box-sizing: border-box;
 }
 .style-data-grid {
-  .dsg-container {
-    height: auto !important;
+  // .dsg-container {
+  //   height: auto !important;
+  // }
+}
+// .data-sheet-grid {
+//   min-height: 400px;
+// }
+.dsg-container {
+  // min-height: 500px;
+  height: calc(fit-content + 50px);
+}
+.test_test {
+  height: 100%;
+  > div {
+    height: 100%;
+    width: 100%;
+  }
+  .rmdp-container {
+    height: 100% !important;
+    width: 100%;
+    .rmdp-input {
+      height: 100% !important;
+    }
   }
 }
+.tetris {
+  background-color: red !important;
+}
+// .date_datagrid_class {
+//   border: 1px solid green;
+// }
+// .dsg-cell {
+//   > div {
+//     height: 100%;
+//   }
+//   .rmdp-container {
+//     height: 100%;
+//     .rmdp-input {
+//       height: 100%;
+//     }
+//   }
+// }
+// .datepicker_manunal_class {
+//   border: 1px solid red !important;
+//   background-color: red !important;
+// }
+// .dsg-checkbox {
+//   width: 100%;
+//   height: 100%;
+// }

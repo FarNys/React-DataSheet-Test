@@ -12,6 +12,7 @@ import {
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectValue } from "../../store/datasheetSlice";
+import { customeDateComponent } from "./DateComponent";
 
 //CUSTOME COMPONENT
 const SelectComponent = ({
@@ -98,27 +99,37 @@ const DataSheet = () => {
     {
       ...keyColumn("normal", textColumn),
       title: "Normal",
+      disabled: true,
     },
     {
       ...keyColumn("checkbox", checkboxColumn),
       title: "Checkbox",
+      disabled: true,
     },
     {
       ...keyColumn("percent", percentColumn),
       title: "Percent",
     },
     {
+      ...keyColumn("customeDate", customeDateComponent({})),
+      title: "CustomeDate",
+    },
+    {
       ...keyColumn("float", floatColumn),
       title: "Float",
+      headerClassName: "tetris",
+      cellClassName: "test_test",
     },
     {
       ...keyColumn("date", dateColumn),
       title: "Date",
+      cellClassName: "date_datagrid_class",
     },
     {
       ...keyColumn("flavor", selectColumn({})),
       title: "Flavor",
     },
+
     // {
     //   ...keyColumn("firstName", textColumn),
     //   title: "FirstName",

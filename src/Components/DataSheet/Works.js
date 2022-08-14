@@ -11,6 +11,7 @@ import {
   floatColumn,
 } from "react-datasheet-grid";
 import DataSheet from "./DataSheet";
+import DateComponent from "./DateComponent";
 const Works = () => {
   const checkList = ["created_at", "updated_at", "id", "name"];
 
@@ -241,6 +242,7 @@ const Works = () => {
         <p>Loading or no data</p>
       )}
       {/* <DataSheet /> */}
+      <DateComponent />
     </div>
   );
 };

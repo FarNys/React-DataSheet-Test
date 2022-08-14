@@ -1,48 +1,38 @@
 import React, { useState } from "react";
 import Select from "react-select";
 //CUSTOME COMPONENT
-const SelectComponent = ({
-  active,
-  focus,
-  rowData,
-  setRowData,
-  stopEditing,
-  columnData,
-}) => {
-  const [defaultOptions, setdefaultOptions] = useState([
-    { value: "chocolate", label: "Chocolate", rowId: 1 },
-    { value: "strawberry", label: "Strawberry", rowId: 2 },
-    { value: "vanilla", label: "Vanilla", rowId: 3 },
-  ]);
-  return (
-    <Select
-      styles={{
-        container: (provided) => ({
-          ...provided,
-          flex: 1,
-          alignSelf: "stretch",
-          pointerEvents: focus ? undefined : "none",
-        }),
-        /*...*/
-        indicatorsContainer: (provided) => ({
-          ...provided,
-          opacity: active ? 1 : 0,
-        }),
-        placeholder: (provided) => ({
-          ...provided,
-          opacity: active ? 1 : 0,
-        }),
-      }}
-      menuPortalTarget={document.body}
-      onChange={({ value }) => {
-        setRowData(value);
-        setTimeout(stopEditing, 0);
-      }}
-      value={defaultOptions.find(({ value }) => value === rowData) ?? null}
-      options={defaultOptions}
-    />
-  );
-};
+const SelectComponent = React.memo(
+  ({ active, focus, rowData, setRowData, stopEditing, columnData }) => {
+    return (
+      <Select
+        styles={{
+          container: (provided) => ({
+            ...provided,
+            flex: 1,
+            alignSelf: "stretch",
+            pointerEvents: focus ? undefined : "none",
+          }),
+          /*...*/
+          indicatorsContainer: (provided) => ({
+            ...provided,
+            opacity: active ? 1 : 0,
+          }),
+          placeholder: (provided) => ({
+            ...provided,
+            opacity: active ? 1 : 0,
+          }),
+        }}
+        menuPortalTarget={document.body}
+        onChange={({ value }) => {
+          setRowData(value);
+          setTimeout(stopEditing, 0);
+        }}
+        value={columnData.find(({ value }) => value === rowData) ?? null}
+        options={columnData}
+      />
+    );
+  }
+);
 
 //COPY PASTED FROM DOCUMENTS
 export const selectColumn = (options) => ({
@@ -53,7 +43,7 @@ export const selectColumn = (options) => ({
   disabled: options.disabled,
   deleteValue: () => null,
   copyValue: ({ rowData }) =>
-    options.choices.find((choice) => choice.value === rowData)?.label,
+    options.find((choice) => choice.value === rowData)?.label,
   pasteValue: ({ value }) =>
-    options.choices.find((choice) => choice.label === value)?.value ?? null,
+    options.find((choice) => choice.label === value)?.value ?? null,
 });
