@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const timing = new Date();
 const DateComponent = React.memo(
   ({ active, focus, rowData, setRowData, stopEditing, columnData }) => {
-    console.log(rowData);
+    // console.log(rowData);
     // const getActiveCell = useSelector(
     //   (state) => state.datasheetSlice.activeCellStore
     // );
@@ -16,9 +16,9 @@ const DateComponent = React.memo(
     // );
     // console.log(getActiveCell, getTableData);
     const [newValue, setnewValue] = useState();
-    console.log(columnData);
+    // console.log(columnData);
     const changeDateHandler = (props) => {
-      console.log(props);
+      // console.log(props);
       setnewValue(props.toDate().toString());
       setRowData(props.toDate().toString());
     };
@@ -27,8 +27,9 @@ const DateComponent = React.memo(
       setnewValue(props.toDate().toString());
       setRowData(props.toDate().toString());
     };
-    const propsHandler = () => {
+    const propsHandler = (props) => {
       console.log("props handler");
+      console.log(props);
     };
     return (
       <div style={{ direction: "rtl" }}>
@@ -67,10 +68,9 @@ export const customeDateComponent = (props) => ({
   keepFocus: false,
   // disabled: options.disabled,
   deleteValue: () => null,
-  // copyValue: ({ rowData }) =>
-  //   options.choices.find((choice) => choice.value === rowData)?.label,
-  // pasteValue: ({ value }) =>
-  //   options.choices.find((choice) => choice.label === value)?.value ?? null,
+  copyValue: ({ rowData }) => props.find((choice) => choice.value === rowData),
+  pasteValue: ({ value }) =>
+    props.find((choice) => choice.label === value) ?? null,
 });
 
 export default DateComponent;

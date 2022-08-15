@@ -31,6 +31,8 @@ const RealWork = () => {
   const checkList = ["created_at", "updated_at", "id", "name"];
   const [columnsTitle, setcolumnsTitle] = useState(null);
   const [columnsType, setcolumnsType] = useState(null);
+  const [columnsTypeCheckbox, setcolumnsTypeCheckbox] = useState([]);
+  const [columnsTypeDate, setcolumnsTypeDate] = useState([]);
   const [columnsDefault, setcolumnsDefault] = useState(null);
   console.log(myData);
 
@@ -50,6 +52,8 @@ const RealWork = () => {
         let titleObject = {};
         let titleType = {};
         let titleDefault = {};
+        let emptyListCheckbox = [];
+        let emptyListDate = [];
         for (let i = 1; i < 37; i++) {
           const col = data[`c${i}`];
           if (col) {
@@ -58,26 +62,40 @@ const RealWork = () => {
               [`c${i}`]: data[`c${i}`],
             };
             titleObject = { ...titleObject, ...x };
-            setcolumnsTitle(titleObject);
 
             //KEY-VALUE PAIR FOR TABLE COLUMNS TYPE
             const y = {
               [`c${i}`]: data[`c${i}_type`],
             };
             titleType = { ...titleType, ...y };
-            setcolumnsType(titleType);
 
             //KEY-VALUE PAIR FOR TABLE DEFAULT COLUMN DATA FOR EVERY CELL
             const z = {
               [`c${i}`]: data[`c${i}_default`],
             };
             titleDefault = { ...titleDefault, ...z };
-            setcolumnsDefault(titleDefault);
           }
         }
+        for (const key in titleType) {
+          if (titleType[key] === 4) {
+            emptyListCheckbox.push(key);
+          }
+        }
+        for (const key in titleType) {
+          if (titleType[key] === 3) {
+            emptyListDate.push(key);
+          }
+        }
+        setcolumnsTitle(titleObject);
+        setcolumnsType(titleType);
+        setcolumnsDefault(titleDefault);
+        setcolumnsTypeCheckbox(emptyListCheckbox);
+        setcolumnsTypeDate(emptyListDate);
       })
       .catch((err) => console.log(err));
   }, []);
+  console.log(columnsTypeCheckbox);
+  console.log(columnsTypeDate);
   console.log(columnsDefault);
   //GET TABLE ACCESS LIST BASED ON SELECTED STATION
   const [colAccess, setcolAccess] = useState(null);
@@ -170,7 +188,6 @@ const RealWork = () => {
   //TABLE DATA
   const [tableData, settableData] = useState([]);
   const [tableDataDefault, settableDataDefault] = useState([]);
-  console.log(tableData);
 
   //GET INITIAL TABLE DATA
   useEffect(() => {
@@ -193,12 +210,12 @@ const RealWork = () => {
       }
     };
     fetchData();
-    // const interval = setInterval(() => {
-    //   fetchData();
-    // }, 5000);
-    // return () => {
-    //   clearInterval(interval);
-    // };
+    const interval = setInterval(() => {
+      fetchData();
+    }, 3000);
+    return () => {
+      clearInterval(interval);
+    };
   }, [columnsTitle]);
 
   //CHANGE DATA GRID HANDLING
@@ -227,7 +244,138 @@ const RealWork = () => {
 
       if (operation.type === "UPDATE") {
         console.log("UPDATED !!!");
-        console.log(operation, activeCell);
+
+        // console.log(operation, activeCell);
+        const rowTarget = operation.fromRowIndex;
+        //LOOP TO GET ALL CHECKBOX COLUMNS AND THEN CHECK IF THE UPDATED DTA IS CHECKBOX OR NOT- IF YES THEN GET NEW VALUE AND SEND IT TO SERVER AND CLOSE LOOP IMMEDIATELY
+        for (let i = 0; i < columnsTypeCheckbox.length; i++) {
+          const el = columnsTypeCheckbox[i];
+          if (tableData[rowTarget][el] !== newValue[rowTarget][el]) {
+            console.log("SUCCESSfUl");
+            let updatedData = newValue[rowTarget];
+            // for (const key in updatedData) {
+            //   if (updatedData[key] === false) {
+            //     updatedData[key] = "false";
+            //   } else {
+            //     updatedData[key] = "true";
+            //   }
+            // }
+            updatedData[el] = newValue[rowTarget][el].toString();
+            console.log(updatedData[el], typeof updatedData[el]);
+            console.log(tableData);
+            console.log(newValue);
+            // console.log(updatedData);
+            // newValue[rowTarget][el] =
+            //   newValue[rowTarget][el] === "false" ? false : true;
+            if (newValue[rowTarget][el] === "false") {
+              newValue[rowTarget][el] = false;
+            }
+            if (newValue[rowTarget][el] === "true") {
+              newValue[rowTarget][el] = true;
+            }
+            console.log(updatedData[el]);
+            console.log(newValue[rowTarget][el]);
+            updatedData = {
+              ...updatedData,
+              [el]: newValue[rowTarget][el].toString(),
+            };
+            console.log(updatedData);
+            axios({
+              method: "put",
+              url: `${baseUrl}/api/v1/workflow/table-row/${updatedData.id}/?work=${workId}`,
+              headers: {
+                Authorization: `Token ${token}`,
+              },
+              data: {
+                ...updatedData,
+              },
+            })
+              .then((res) => {
+                console.log(res);
+                // settableData(newValue);
+              })
+              .catch((err) => console.log(err));
+          }
+          settableData(newValue);
+          break;
+        }
+        console.log(columnsTypeDate);
+        //LOOP TO GET ALL DATE COLUMNS AND THEN CHECK IF THE UPDATED DTA IS CHECKBOX OR NOT- IF YES THEN GET NEW VALUE AND SEND IT TO SERVER AND CLOSE LOOP IMMEDIATELY
+        for (let i = 0; i < columnsTypeDate.length; i++) {
+          const el = columnsTypeDate[i];
+          if (tableData[rowTarget][el] !== newValue[rowTarget][el]) {
+            console.log("DATE NEW COMPONENT");
+            let updatedData = newValue[rowTarget];
+            console.log(updatedData);
+            for (const key in updatedData) {
+              if (updatedData[key] === false) {
+                updatedData[key] = "false";
+              }
+              if (updatedData[key] === true) {
+                updatedData[key] = "true";
+              }
+            }
+            axios({
+              method: "put",
+              url: `${baseUrl}/api/v1/workflow/table-row/${updatedData.id}/?work=${workId}`,
+              headers: {
+                Authorization: `Token ${token}`,
+              },
+              data: {
+                ...updatedData,
+              },
+            })
+              .then((res) => {
+                console.log("HI ALL HI aLl");
+                console.log(res);
+                // settableData(newValue);
+              })
+              .catch((err) => console.log(err));
+          }
+          settableData(newValue);
+          break;
+        }
+        //   updatedData[el] = newValue[rowTarget][el].toString();
+        //   console.log(updatedData[el], typeof updatedData[el]);
+        //   console.log(tableData);
+        //   console.log(newValue);
+        //   // console.log(updatedData);
+        //   // newValue[rowTarget][el] =
+        //   //   newValue[rowTarget][el] === "false" ? false : true;
+        //   if (newValue[rowTarget][el] === "false") {
+        //     newValue[rowTarget][el] = false;
+        //   }
+        //   if (newValue[rowTarget][el] === "true") {
+        //     newValue[rowTarget][el] = true;
+        //   }
+        //   console.log(updatedData[el]);
+        //   console.log(newValue[rowTarget][el]);
+        //   updatedData = {
+        //     ...updatedData,
+        //     [el]: newValue[rowTarget][el].toString(),
+        //   };
+        //   console.log(updatedData);
+        //   axios({
+        //     method: "put",
+        //     url: `${baseUrl}/api/v1/workflow/table-row/${updatedData.id}/?work=${workId}`,
+        //     headers: {
+        //       Authorization: `Token ${token}`,
+        //     },
+        //     data: {
+        //       ...updatedData,
+        //     },
+        //   })
+        //     .then((res) => {
+        //       console.log(res);
+        //       // settableData(newValue);
+        //     })
+        //     .catch((err) => console.log(err));
+        // }
+        // settableData(newValue);
+        // return;
+
+        // const oldData=tableData[rowTarget][]
+
         // if(activeCell.colId)
         //TEST LOOP CHANGE TO GET CHANGED VALUE
         //IT WILL TRIGGER WITH EVERY TYPE WE SHOULD CHECK IF THE CHANGED VALUE IS CHECKBOX OR NOT!(ALSO FOR DATE)

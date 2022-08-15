@@ -9,8 +9,8 @@ import {
   SelectionMode,
 } from "@silevis/reactgrid";
 import "@silevis/reactgrid/styles.css";
-
-const getPeople = [
+import { DropdownCellTemplate } from "./DropGrid";
+const getPeople = () => [
   {
     name: "Thomas",
     surname: "Goldman",
@@ -43,7 +43,7 @@ const getColumns = [
   { columnId: "checkbox", width: 150 },
   { columnId: "date", width: 150 },
   { columnId: "number", width: 150 },
-  { columnId: "dropdown", width: 150 },
+  { columnId: "dropdowns", width: 150 },
 ];
 
 const headerRow = {
@@ -69,15 +69,15 @@ const getRows = (people) => [
       { type: "date", date: person.date },
       { type: "number", value: person.number },
       {
-        type: "dropdown",
+        type: "dropdowns",
         values: [
           { label: "string-1", value: "string-1" },
-          { label: "string-2", value: "string-2" },
-          { label: "string-3", value: "string-3" },
+          // { label: "string-2", value: "string-2" },
+          // { label: "string-3", value: "string-3" },
         ],
-        // isDisabled: true,
+        // isDisabled: false,
         isOpen: true,
-        // selectedValue: 555,
+        selectedValue: person.dropdown,
         value: person.dropdown,
       },
     ],
@@ -149,6 +149,7 @@ const ReactGrids = () => {
         rows={rows}
         columns={columns}
         onCellsChanged={cellChangeHandler}
+        customCellTemplates={{ dropdowns: new DropdownCellTemplate() }}
         // enableRowSelection
         // enableColumnSelection
         enableRangeSelection

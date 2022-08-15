@@ -54,3 +54,117 @@
 //   width: 100%;
 //   height: 100%;
 // }
+
+//REVO GRID STYLES
+.revo-grid {
+  height: 200px;
+}
+.revo_grid_manual {
+  border: 1px solid red;
+  min-height: 500px;
+}
+
+//HANDSON TABLE
+/*
+  A stylesheet customizing app (custom renderers)
+*/
+
+table.htCore td.star {
+  color: #fcb515;
+}
+
+table.htCore tr.odd td {
+  background: #fafbff;
+}
+
+table.htCore td .progressBar {
+  background: #37bc6c;
+  height: 10px;
+}
+
+table.htCore tr.selected td {
+  background: #edf3fd;
+}
+
+/*
+  A stylesheet customizing Handsontable style
+*/
+
+.collapsibleIndicator {
+  text-align: center;
+}
+
+.handsontable .htRight .changeType {
+  margin: 3px 1px 0 13px;
+}
+.handsontable .green {
+  background: #37bc6c;
+  font-weight: bold;
+}
+
+.handsontable .orange {
+  background: #fcb515;
+  font-weight: bold;
+}
+
+.btn {
+  padding: 20px;
+  font: 1.4em sans-serif;
+}
+[data-color="green"] {
+  background: #37bc6c;
+}
+[data-color="orange"] {
+  background: #fcb515;
+}
+//HANDSON MANUAL STYLE
+.hotCol_dropdown_manual {
+  // border: 1px solid green !important;
+  display: flex;
+  padding: 0 !important;
+  height: 100%;
+  div {
+    width: 100% !important;
+    height: 100% !important;
+
+    box-sizing: border-box !important;
+    flex: 1;
+    // border: 1px solid red;
+    padding: 0 !important;
+  }
+}
+.select_handson_container {
+  // border: 1px solid red;
+  width: 100%;
+  height: 100%;
+}
+#hot-display-license-info {
+  display: none;
+}
+td {
+  max-width: 100px;
+}
+// .checkbox_manual {
+//   // border: 1px solid red !important;
+//   // display: flex;
+//   // justify-content: center;
+//   // align-items: center;
+
+//   height: 100% !important;
+//   position: relative;
+//   > input {
+//     position: absolute;
+//     padding: 0 !important;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//     margin: 0 !important;
+//     border: 1px solid blue !important;
+//   }
+// }
+// td {
+//   padding: 1rem !important;
+// }
+// .relative {
+//   padding: 1rem;
+// }

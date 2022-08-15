@@ -7,7 +7,9 @@ import Works from "./Components/DataSheet/Works";
 import ReactGrids from "./Components/ReactGrid/ReactGrids";
 import WorkflowCreate from "./Components/DataSheet/WorkflowNew/WorkflowCreate";
 import RealWork from "./Components/DataSheet/WorkflowNew/RealWork";
-
+import RevoGridTable from "./Components/RevoGrid/RevoGridTable";
+import HSTable from "./Components/HandsonTable/HSTable";
+import HSTable2 from "./Components/HandsonTable/HSTable2";
 function App() {
   return (
     <div className="App">
@@ -21,7 +23,15 @@ function App() {
       <li>
         <Link to="/react-grid">React Grid</Link>
       </li>
-      <h2>7.65 Workflow</h2>
+      <li>
+        <Link to="/revo-grid">Revo Grid</Link>
+      </li>
+      <li>
+        <Link to="/handson">Handson Table</Link>
+      </li>
+      <li>
+        <Link to="/handson2">Handson Table - 2</Link>
+      </li>
       <li>
         <Link to="/workflow">Create Workflow</Link>
       </li>
@@ -31,6 +41,9 @@ function App() {
       <Routes>
         <Route path="/" element={<DataSheet />} />
         <Route path="/workflow" element={<WorkflowCreate />} />
+        <Route path="/revo-grid" element={<RevoGridTable />} />
+        <Route path="/handson" element={<HSTable />} />
+        <Route path="/handson2" element={<HSTable2 />} />
         <Route path="/data-grid" element={<Works />} />
         <Route path="/react-grid" element={<ReactGrids />} />
         <Route path="/work" element={<RealWork />} />
