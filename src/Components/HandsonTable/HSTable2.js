@@ -10,6 +10,7 @@ import HandCell from "./HandCell";
 //CUSTOM CELL CREATION
 // var MyEditor = Handsontable.editors.DateEditor.prototype.extend();
 var MyEditor = Handsontable.editors.DateEditor.prototype.extend();
+var MyTextEditor = Handsontable.editors.TextEditor.prototype.extend();
 
 function customRenderer(
   instance,
@@ -38,6 +39,24 @@ function customValidator(query, callback) {
 // Register an alias
 Handsontable.cellTypes.registerCellType("my.custom", {
   editor: MyEditor,
+  renderer: customRenderer,
+  // validator: customValidator,
+  // You can add additional options to the cell type
+  // based on Handsontable settings
+  className: "my-cell",
+  allowInvalid: true,
+  // Or you can add custom properties which
+  // will be accessible in `cellProperties`
+  myCustomCellState: "complete",
+});
+function customTextValidator(query, callback) {
+  // ...validator logic
+  callback(/* Pass `true` or `false` */);
+}
+
+// Register an alias
+Handsontable.cellTypes.registerCellType("my.custom.text", {
+  editor: MyTextEditor,
   renderer: customRenderer,
   validator: customValidator,
   // You can add additional options to the cell type
@@ -107,12 +126,13 @@ const HSTable2 = () => {
         // layoutDirection="rtl"
         data={tableData}
         colHeaders={["a", "bb", "c3"]}
+        // colHeaders={true}
         rowHeaders={true}
         width="600"
         height="300"
         afterChange={afterChangeHandling}
         columns={[
-          { data: "car" },
+          { data: "car", manualColumnResize: true },
           { data: "price_usd", type: "numeric", numericFormat: { formatJP } },
           {
             type: "dropdown",
@@ -142,7 +162,8 @@ const HSTable2 = () => {
             data: "myDate",
             type: "date",
             allowInvalid: false,
-            defaultDate: "01/01/1400",
+            // defaultDate: "01/01/1400",
+            locale: "ja-JP",
             isRTL: true,
             datePickerConfig: {
               numberOfMonths: 1,
@@ -183,6 +204,9 @@ const HSTable2 = () => {
           },
           {
             type: "my.custom",
+          },
+          {
+            type: "my.custom.text",
           },
         ]}
       />

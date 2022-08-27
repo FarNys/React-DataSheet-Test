@@ -10,6 +10,8 @@ import RealWork from "./Components/DataSheet/WorkflowNew/RealWork";
 import RevoGridTable from "./Components/RevoGrid/RevoGridTable";
 import HSTable from "./Components/HandsonTable/HSTable";
 import HSTable2 from "./Components/HandsonTable/HSTable2";
+import ReactSpreadSheet from "./Components/ReactSpreadSheet/ReactSpreadSheet";
+import GridForFlag from "./Components/ReactGrid/GridForFlag";
 function App() {
   return (
     <div className="App">
@@ -24,6 +26,9 @@ function App() {
         <Link to="/react-grid">React Grid</Link>
       </li>
       <li>
+        <Link to="/react-grid-custom">React Grid</Link>
+      </li>
+      <li>
         <Link to="/revo-grid">Revo Grid</Link>
       </li>
       <li>
@@ -31,6 +36,9 @@ function App() {
       </li>
       <li>
         <Link to="/handson2">Handson Table - 2</Link>
+      </li>
+      <li>
+        <Link to="/react-spreadsheet">SpreadSheet React</Link>
       </li>
       <li>
         <Link to="/workflow">Create Workflow</Link>
@@ -46,7 +54,9 @@ function App() {
         <Route path="/handson2" element={<HSTable2 />} />
         <Route path="/data-grid" element={<Works />} />
         <Route path="/react-grid" element={<ReactGrids />} />
+        <Route path="/react-grid-custom" element={<GridForFlag />} />
         <Route path="/work" element={<RealWork />} />
+        <Route path="/react-spreadsheet" element={<ReactSpreadSheet />} />
         {/* <Route path="about" element={<About />} /> */}
       </Routes>
       {/* <Test /> */}
