@@ -12,6 +12,7 @@ import HSTable from "./Components/HandsonTable/HSTable";
 import HSTable2 from "./Components/HandsonTable/HSTable2";
 import ReactSpreadSheet from "./Components/ReactSpreadSheet/ReactSpreadSheet";
 import GridForFlag from "./Components/ReactGrid/GridForFlag";
+import ReactGridCustom from "./Components/ReactGrid/ReactGridCustom";
 function App() {
   return (
     <div className="App">
@@ -27,6 +28,9 @@ function App() {
       </li>
       <li>
         <Link to="/react-grid-custom">React Grid</Link>
+      </li>
+      <li>
+        <Link to="/react-grid-new">React Grid--2</Link>
       </li>
       <li>
         <Link to="/revo-grid">Revo Grid</Link>
@@ -53,6 +57,7 @@ function App() {
         <Route path="/handson" element={<HSTable />} />
         <Route path="/handson2" element={<HSTable2 />} />
         <Route path="/data-grid" element={<Works />} />
+        <Route path="/react-grid-new" element={<ReactGridCustom />} />
         <Route path="/react-grid" element={<ReactGrids />} />
         <Route path="/react-grid-custom" element={<GridForFlag />} />
         <Route path="/work" element={<RealWork />} />

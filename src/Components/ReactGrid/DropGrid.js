@@ -181,7 +181,7 @@ const DropdownInput = ({ onCellChanged, cell }) => {
         defaultValue={cell.values.find(
           (val) => val.value === cell.selectedValue
         )}
-        isDisabled={cell.isDisabled}
+        // isDisabled={cell.isDisabled}
         options={cell.values}
         onKeyDown={(e) => e.stopPropagation()}
         components={{
