@@ -163,7 +163,7 @@ const HSTable2 = () => {
             type: "date",
             allowInvalid: false,
             // defaultDate: "01/01/1400",
-            locale: "ja-JP",
+            locale: "ar-AR",
             isRTL: true,
             datePickerConfig: {
               numberOfMonths: 1,
@@ -205,9 +205,9 @@ const HSTable2 = () => {
           {
             type: "my.custom",
           },
-          {
-            type: "my.custom.text",
-          },
+          // {
+          //   type: "my.custom.text",
+          // },
         ]}
       />
     </div>

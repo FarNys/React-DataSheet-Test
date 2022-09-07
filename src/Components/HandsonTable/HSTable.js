@@ -11,7 +11,10 @@ import {
 } from "./HooksCallbacks";
 import { data } from "./constants";
 import SelectRender from "./SelectRender";
-import SelectTest from "./SelectTest";
+import RendererComponent from "./RendererComponent";
+import SelectHand from "./SelectHand";
+import DateHand from "./DateHand";
+import DatePicker from "react-multi-date-picker";
 
 // const hotData = Handsontable.helper.createSpreadsheetData(10, 5);
 // const secondColumnSettings = {
@@ -63,15 +66,29 @@ const HSTable = () => {
         <HotColumn data={3} />
         <HotColumn data={4} type="date" allowInvalid={false} />
         <HotColumn data={5} />
+        <HotColumn
+          source={["hi", "bye"]}
+          data={8}
+          type="dropdown"
+          // className="hotCol_dropdown_manual"
+        />
         <HotColumn data={6} type="checkbox" className="htCenter" />
         <HotColumn data={7} type="numeric" />
-        <HotColumn data={8} type="dropdown">
-          <SelectTest hot-renderer />
-        </HotColumn>
-
-        {/* <HotColumn data={8} className="hotCol_dropdown_manual">
-          <SelectRender hot-renderer />
+        {/* <HotColumn>
+          <DatePicker hot-renderer />
         </HotColumn> */}
+        {/* <HotColumn data={8} type="dropdown">
+          <RendererComponent hot-renderer />
+        </HotColumn> */}
+        {/* <HotColumn data={8}>
+          <SelectHand hot-renderer />
+        </HotColumn> */}
+        {/* <HotColumn data={9}>
+          <DateHand hot-renderer />
+        </HotColumn> */}
+
+        {/* <SelectRender hot-renderer /> */}
+        {/* </HotColumn> */}
       </HotTable>
     </div>
   );

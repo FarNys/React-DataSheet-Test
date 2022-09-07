@@ -133,6 +133,7 @@ export class DropdownCellTemplate {
 //   onCellChanged: (...args: any[]) => void;
 //   cell: Record<string, any>;
 // }
+console.log(getCellProperty);
 
 const DropdownInput = ({ onCellChanged, cell }) => {
   const selectRef = React.useRef(null);

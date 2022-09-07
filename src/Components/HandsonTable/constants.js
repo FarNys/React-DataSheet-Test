@@ -8,12 +8,8 @@ export const data = [
     "01-2331942",
     true,
     "172",
-    "",
-    [
-      { value: "chocolate", label: "Chocolate" },
-      { value: "strawberry", label: "Strawberry" },
-      { value: "vanilla", label: "Vanilla" },
-    ],
+    "hi",
+
     // 2,
     // 2,
   ],
@@ -26,13 +22,7 @@ export const data = [
     "88-2768633",
     true,
     185,
-    "",
-
-    [
-      { value: "chocolate", label: "Chocolate" },
-      { value: "strawberry", label: "Strawberry" },
-      { value: "vanilla", label: "Vanilla" },
-    ],
+    "bye",
 
     // ["15", "12", "8"],
 
