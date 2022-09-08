@@ -34,11 +34,54 @@ const RevoGridTable = () => {
     },
     { prop: "birthdate", columnType: "date", size: 200 },
     {
-      ...dropdown,
       columnType: "select",
       // labelKey: "label",
-      valueKey: "value",
-      prop: "dd",
+      source: ["hi", "bye"],
+      prop: "selection",
+      name: "SelectMe",
+    },
+    {
+      prop: "custom",
+      name: "CustomCell",
+      cellTemplate: (createElement, props) => {
+        // console.log(props);
+        const findType = props.model[props.prop];
+        console.log(typeof findType, findType);
+        // console.log(findType, typeof +findType);
+        // console.log(typeof +props.model[props.prop]);
+        return createElement(
+          "div",
+          {
+            style: {
+              color: "red",
+              backgroundColor: props.model[props.prop]
+                ? "rgba(0,0,255,+props.model[props.prop] / 100)"
+                : "rgba(0,0,0,0)",
+              width: "100%",
+            },
+          },
+          // typeof props.model[props.prop] === "number"
+          // "m".repeat(props.model[props.prop])
+          props.model[props.prop]
+          // : null
+        );
+      },
+    },
+    {
+      prop: "customCheck",
+      name: "myCheckBox",
+      cellTemplate: (createElement, props) => {
+        // console.log(props);
+        return (
+          createElement("input", {
+            style: {
+              color: "red",
+            },
+            type: "checkbox",
+          }),
+          props.model[props.prop]
+        );
+      },
     },
   ]);
   const [source, setsource] = useState([
@@ -46,29 +89,41 @@ const RevoGridTable = () => {
       name: "1",
       details: "Item 1",
       family: "gladiator",
-      dd: "",
-      birthdate: "",
+      selection: "",
+      custom: "",
+      customCheck: "",
     },
     {
       name: "2",
       details: "Item 70",
       family: "troy",
-      dd: "",
+      selection: "",
+      custom: "",
+      customCheck: "",
     },
     {
       name: "15",
       details: "Item 35",
       family: "trossssy",
+      selection: "",
+      custom: "",
+      customCheck: "",
     },
     {
       name: "2",
       details: "Item 67",
       family: "Valid",
+      selection: "",
+      custom: "",
+      customCheck: "",
     },
     {
       name: "2",
       details: "Item 21",
       family: "email",
+      selection: "",
+      custom: "",
+      customCheck: true,
     },
   ]);
   const afterEditHandler = (e) => {
@@ -100,6 +155,8 @@ const RevoGridTable = () => {
         // onPaste={pasteHandler}
         // onCopyCapture={copyCaptureHandler}
         columnTypes={columnTypes}
+        resize="true"
+        range="true"
       />
     </div>
   );
