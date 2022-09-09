@@ -11,22 +11,23 @@ import {
 } from "@silevis/reactgrid";
 import "@silevis/reactgrid/styles.scss";
 import { DropdownCellTemplate } from "./DropGrid";
+import { FaridCell } from "./FaridCell";
 
 const getPeople = () => [
   {
     name: "Thomas",
     surname: "Goldman",
-    dropd: "",
+    fCell: "Goldman",
   },
   {
     name: "Susie",
     surname: "Quattro",
-    dropd: "",
+    fCell: "F",
   },
   {
     name: "",
     surname: "",
-    dropd: "",
+    fCell: "",
   },
 ];
 
@@ -35,7 +36,7 @@ const headerRow = {
   cells: [
     { type: "header", text: "Name" },
     { type: "header", text: "Surname" },
-    { type: "header", text: "DD" },
+    { type: "header", text: "FaridCustomCell" },
   ],
 };
 
@@ -46,11 +47,7 @@ const getRows = (people) => [
     cells: [
       { type: "text", text: person.name },
       { type: "text", text: person.surname },
-      {
-        type: "dd",
-        values: [{ label: "farid", value: "farid" }],
-        // isOpen: true,
-      },
+      { type: "faridCell", text: person.fCell },
     ],
   })),
 ];
@@ -59,7 +56,7 @@ const ReactGridCustom = () => {
   const getColumns = [
     { columnId: "name", width: selectedWidth, resizable: true },
     { columnId: "surname", resizable: true },
-    { columnId: "dropd", resizable: true },
+    { columnId: "fCell", resizable: true },
   ];
 
   const [people, setPeople] = useState(getPeople);
@@ -75,8 +72,8 @@ const ReactGridCustom = () => {
     })),
   ];
   const applyChangesToPeople = (changes, prevPeople) => {
-    console.log(changes);
     changes.forEach((change) => {
+      console.log(change);
       const personIndex = change.rowId;
       const fieldName = change.columnId;
       if (change.type === "number") {
@@ -90,6 +87,9 @@ const ReactGridCustom = () => {
         prevPeople[personIndex][fieldName] = change.newCell.date;
       }
       if (change.type === "text") {
+        prevPeople[personIndex][fieldName] = change.newCell.text;
+      }
+      if (change.type === "faridCell") {
         prevPeople[personIndex][fieldName] = change.newCell.text;
       }
     });
@@ -134,7 +134,8 @@ const ReactGridCustom = () => {
         // enableRowSelection
         // enableColumnSelection
         enableRangeSelection
-        customCellTemplates={{ dd: new DropdownCellTemplate() }}
+        // customCellTemplates={{ dd: new DropdownCellTemplate() }}
+        customCellTemplates={{ faridCell: new FaridCell() }}
         onContextMenu={simpleHandleContextMenu}
         onColumnResized={handleColumnResize}
       />
