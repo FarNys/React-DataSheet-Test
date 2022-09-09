@@ -56,19 +56,28 @@ export class FaridCell {
       );
     }
     return (
-      <input
-        ref={(input) => {
-          input && input.focus();
-        }}
-        type="number"
-        defaultValue={cell.text}
-        onChange={(e) => {
-          console.log(e.currentTarget.value);
-          onCellChanged(
-            this.getCompatibleCell({ ...cell, text: e.currentTarget.value }),
-            false
-          );
-        }}
+      // <input
+      //   ref={(input) => {
+      //     input && input.focus();
+      //   }}
+      //   type="number"
+      //   defaultValue={cell.text}
+      // onChange={(e) => {
+      //   console.log(e.currentTarget.value);
+      //   onCellChanged(
+      //     this.getCompatibleCell({ ...cell, text: e.currentTarget.value }),
+      //     false
+      //   );
+      // }}
+      // onCopy={(e) => e.stopPropagation()}
+      // onCut={(e) => e.stopPropagation()}
+      // onPaste={(e) => e.stopPropagation()}
+      // onPointerDown={(e) => e.stopPropagation()}
+      // onKeyDown={(e) => {
+      //   if (isAlphaNumericKey(e.keyCode) || isNavigationKey(e.keyCode))
+      //     e.stopPropagation();
+      // }}
+      <select
         onCopy={(e) => e.stopPropagation()}
         onCut={(e) => e.stopPropagation()}
         onPaste={(e) => e.stopPropagation()}
@@ -77,7 +86,19 @@ export class FaridCell {
           if (isAlphaNumericKey(e.keyCode) || isNavigationKey(e.keyCode))
             e.stopPropagation();
         }}
-      />
+        onChange={(e) => {
+          console.log(e.currentTarget.value);
+          onCellChanged(
+            this.getCompatibleCell({ ...cell, text: e.currentTarget.value }),
+            false
+          );
+        }}
+      >
+        <option>a</option>
+        <option>b</option>
+        <option>c</option>
+      </select>
+      // />
     );
   }
 }
