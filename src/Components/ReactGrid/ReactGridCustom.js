@@ -12,22 +12,27 @@ import {
 import "@silevis/reactgrid/styles.scss";
 import { DropdownCellTemplate } from "./DropGrid";
 import { FaridCell } from "./FaridCell";
+import { FaridDate } from "./FaridDate";
 
 const getPeople = () => [
   {
     name: "Thomas",
     surname: "Goldman",
-    fCell: "Goldman",
+    fCell: "b",
+    fDate: "",
   },
   {
     name: "Susie",
     surname: "Quattro",
-    fCell: "F",
+    fCell: "a",
+    fDate: "F",
   },
   {
-    name: "",
+    name: "Z",
     surname: "",
     fCell: "",
+
+    fDate: "",
   },
 ];
 
@@ -37,6 +42,7 @@ const headerRow = {
     { type: "header", text: "Name" },
     { type: "header", text: "Surname" },
     { type: "header", text: "FaridCustomCell" },
+    { type: "header", text: "FaridDateCell" },
   ],
 };
 
@@ -48,15 +54,18 @@ const getRows = (people) => [
       { type: "text", text: person.name },
       { type: "text", text: person.surname },
       { type: "faridCell", text: person.fCell },
+      { type: "faridDate", text: person.fDate },
     ],
   })),
 ];
 const ReactGridCustom = () => {
-  const [selectedWidth, setselectedWidth] = useState(150);
+  const [selectedWidth, setselectedWidth] = useState({});
+  console.log(selectedWidth);
   const getColumns = [
-    { columnId: "name", width: selectedWidth, resizable: true },
-    { columnId: "surname", resizable: true },
-    { columnId: "fCell", resizable: true },
+    { columnId: "name", width: selectedWidth["name"], resizable: true },
+    { columnId: "surname", width: selectedWidth["surname"], resizable: true },
+    { columnId: "fCell", width: selectedWidth["fCell"], resizable: true },
+    { columnId: "fDate", width: selectedWidth["fDate"], resizable: true },
   ];
 
   const [people, setPeople] = useState(getPeople);
@@ -92,6 +101,10 @@ const ReactGridCustom = () => {
       if (change.type === "faridCell") {
         prevPeople[personIndex][fieldName] = change.newCell.text;
       }
+      if (change.type === "faridDate") {
+        prevPeople[personIndex][fieldName] = change.newCell.text;
+        console.log("farid date cell update!");
+      }
     });
 
     return [...prevPeople];
@@ -111,9 +124,9 @@ const ReactGridCustom = () => {
     return menuOptions;
   };
 
-  const handleColumnResize = (a, b, c) => {
-    console.log(a, b, c);
-    setselectedWidth(b);
+  const handleColumnResize = (a, b) => {
+    console.log(a, b);
+    setselectedWidth({ ...selectedWidth, [a]: b });
   };
 
   return (
@@ -135,7 +148,10 @@ const ReactGridCustom = () => {
         // enableColumnSelection
         enableRangeSelection
         // customCellTemplates={{ dd: new DropdownCellTemplate() }}
-        customCellTemplates={{ faridCell: new FaridCell() }}
+        customCellTemplates={{
+          faridCell: new FaridCell(),
+          faridDate: new FaridDate(),
+        }}
         onContextMenu={simpleHandleContextMenu}
         onColumnResized={handleColumnResize}
       />

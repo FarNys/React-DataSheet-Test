@@ -78,6 +78,7 @@ export class FaridCell {
       //     e.stopPropagation();
       // }}
       <select
+        style={{ width: "100%" }}
         onCopy={(e) => e.stopPropagation()}
         onCut={(e) => e.stopPropagation()}
         onPaste={(e) => e.stopPropagation()}
@@ -90,10 +91,11 @@ export class FaridCell {
           console.log(e.currentTarget.value);
           onCellChanged(
             this.getCompatibleCell({ ...cell, text: e.currentTarget.value }),
-            false
+            true
           );
         }}
       >
+        <option></option>
         <option>a</option>
         <option>b</option>
         <option>c</option>
