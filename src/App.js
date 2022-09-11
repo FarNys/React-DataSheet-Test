@@ -13,6 +13,7 @@ import HSTable2 from "./Components/HandsonTable/HSTable2";
 import ReactSpreadSheet from "./Components/ReactSpreadSheet/ReactSpreadSheet";
 import GridForFlag from "./Components/ReactGrid/GridForFlag";
 import ReactGridCustom from "./Components/ReactGrid/ReactGridCustom";
+import MyReactDataGrid from "./Components/ReactDataGrid/MyReactDataGrid";
 function App() {
   return (
     <div className="App">
@@ -50,6 +51,9 @@ function App() {
       <li>
         <Link to="/work">Real Work</Link>
       </li>
+      <li>
+        <Link to="/react-data-grid">React Data Grid</Link>
+      </li>
       <Routes>
         <Route path="/" element={<DataSheet />} />
         <Route path="/workflow" element={<WorkflowCreate />} />
@@ -62,6 +66,7 @@ function App() {
         <Route path="/react-grid-custom" element={<GridForFlag />} />
         <Route path="/work" element={<RealWork />} />
         <Route path="/react-spreadsheet" element={<ReactSpreadSheet />} />
+        <Route path="/react-data-grid" element={<MyReactDataGrid />} />
         {/* <Route path="about" element={<About />} /> */}
       </Routes>
       {/* <Test /> */}

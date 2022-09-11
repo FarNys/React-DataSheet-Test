@@ -25,7 +25,7 @@ const getPeople = () => [
     name: "Susie",
     surname: "Quattro",
     fCell: "a",
-    fDate: "F",
+    fDate: "",
   },
   {
     name: "Z",
@@ -53,7 +53,7 @@ const getRows = (people) => [
     cells: [
       { type: "text", text: person.name },
       { type: "text", text: person.surname },
-      { type: "faridCell", text: person.fCell },
+      { type: "faridCell", text: person.fCell, list: ["a", "b", "c"] },
       { type: "faridDate", text: person.fDate },
     ],
   })),
@@ -99,6 +99,9 @@ const ReactGridCustom = () => {
         prevPeople[personIndex][fieldName] = change.newCell.text;
       }
       if (change.type === "faridCell") {
+        console.log(prevPeople[personIndex]);
+        const findList = prevPeople[personIndex]["list"];
+        console.log(findList);
         prevPeople[personIndex][fieldName] = change.newCell.text;
       }
       if (change.type === "faridDate") {
@@ -125,7 +128,6 @@ const ReactGridCustom = () => {
   };
 
   const handleColumnResize = (a, b) => {
-    console.log(a, b);
     setselectedWidth({ ...selectedWidth, [a]: b });
   };
 

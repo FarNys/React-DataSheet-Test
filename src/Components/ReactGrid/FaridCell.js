@@ -29,21 +29,15 @@ export class FaridCell {
   }
 
   update(cell, cellToMerge) {
-    console.log(cell, cellToMerge);
+    console.log(cellToMerge);
     return this.getCompatibleCell({ ...cell, text: cellToMerge.text });
   }
 
   render(cell, isInEditMode, onCellChanged) {
     console.log(cell);
+
     if (!isInEditMode) {
-      const flagISO = cell.text.toLowerCase(); // ISO 3166-1, 2/3 letters
-      const flagURL = `https://restcountries.eu/data/${flagISO}.svg`;
-      const alternativeURL = `https://upload.wikimedia.org/wikipedia/commons/0/04/Nuvola_unknown_flag.svg`;
       return (
-        // <div
-        //   className="rg-flag-wrapper"
-        //   style={{ backgroundImage: `url(${flagURL}), url(${alternativeURL})` }}
-        // />
         <div
           style={{
             backgroundColor: `rgba(0,0,255,${cell.text / 100})`,
@@ -51,32 +45,12 @@ export class FaridCell {
             height: "100%",
           }}
         >
-          {cell.text}
+          {cell.list.find((el) => (el === cell.text ? cell.text : null))}
         </div>
       );
     }
+
     return (
-      // <input
-      //   ref={(input) => {
-      //     input && input.focus();
-      //   }}
-      //   type="number"
-      //   defaultValue={cell.text}
-      // onChange={(e) => {
-      //   console.log(e.currentTarget.value);
-      //   onCellChanged(
-      //     this.getCompatibleCell({ ...cell, text: e.currentTarget.value }),
-      //     false
-      //   );
-      // }}
-      // onCopy={(e) => e.stopPropagation()}
-      // onCut={(e) => e.stopPropagation()}
-      // onPaste={(e) => e.stopPropagation()}
-      // onPointerDown={(e) => e.stopPropagation()}
-      // onKeyDown={(e) => {
-      //   if (isAlphaNumericKey(e.keyCode) || isNavigationKey(e.keyCode))
-      //     e.stopPropagation();
-      // }}
       <select
         style={{ width: "100%" }}
         onCopy={(e) => e.stopPropagation()}
@@ -88,17 +62,23 @@ export class FaridCell {
             e.stopPropagation();
         }}
         onChange={(e) => {
-          console.log(e.currentTarget.value);
+          // console.log(e.currentTarget.value);
+          console.log(e.target);
+          const findValue = cell.list.find((el) => el === e.target.value);
+          console.log(findValue);
           onCellChanged(
-            this.getCompatibleCell({ ...cell, text: e.currentTarget.value }),
+            this.getCompatibleCell({
+              ...cell,
+              text: findValue ? findValue : null,
+            }),
             true
           );
         }}
       >
         <option></option>
-        <option>a</option>
-        <option>b</option>
-        <option>c</option>
+        {cell.list.map((el, index) => (
+          <option key={`${el}-${index}`}>{el}</option>
+        ))}
       </select>
       // />
     );
