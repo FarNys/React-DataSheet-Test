@@ -180,3 +180,11 @@ td {
 //     }
 //   }
 // }
+.reactgrid_container {
+  border: 1px solid red;
+  height: 500px;
+  overflow-y: scroll;
+  overflow-x: visible;
+  margin-bottom: 20px;
+  // overflow-y: scroll;
+}

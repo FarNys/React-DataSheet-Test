@@ -34,7 +34,7 @@ export class FaridCell {
   }
 
   render(cell, isInEditMode, onCellChanged) {
-    console.log(cell);
+    // console.log(cell);
 
     if (!isInEditMode) {
       return (
@@ -63,7 +63,6 @@ export class FaridCell {
         }}
         onChange={(e) => {
           // console.log(e.currentTarget.value);
-          console.log(e.target);
           const findValue = cell.list.find((el) => el === e.target.value);
           console.log(findValue);
           onCellChanged(

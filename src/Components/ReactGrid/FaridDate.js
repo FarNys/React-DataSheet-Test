@@ -32,11 +32,12 @@ export class FaridDate {
   }
 
   update(cell, cellToMerge) {
-    console.log(cell, cellToMerge);
+    // console.log(cell, cellToMerge);
     return this.getCompatibleCell({ ...cell, text: cellToMerge.text });
   }
 
   render(cell, isInEditMode, onCellChanged) {
+    // console.log(cell);
     if (!isInEditMode) {
       <div>{cell.text}</div>;
     }
@@ -52,6 +53,7 @@ export class FaridDate {
         locale={persian_fa}
         calendarPosition="bottom-right"
         onChange={(e) => {
+          console.log(e);
           onCellChanged(
             this.getCompatibleCell({
               ...cell,
@@ -59,11 +61,8 @@ export class FaridDate {
             }),
             true
           );
-        }} //   onPropsChange={propsHandler}
-        // onClose={handleClose}
-        //   onFocusedDateChange={handleClose}
-        // value={rowData?.day}
-        // value={cell.text}
+        }}
+        value={cell.text ? new DateObject(cell.text) : null}
         portalTarget={document.body}
         portal={document.body}
         onCopy={(e) => e.stopPropagation()}

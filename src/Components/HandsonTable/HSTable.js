@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Handsontable from "handsontable";
 import { HotTable, HotColumn } from "@handsontable/react";
 import "handsontable/dist/handsontable.min.css";
@@ -31,11 +31,11 @@ const HSTable = () => {
   // moment.locale("ja");
   // registerCellType(DateCellType);
   const [dateState, setdateState] = useState("56");
-  const afterChangeHandler = (e) => {
+  const afterChangeHandler = useCallback((e) => {
     console.log(e);
-  };
+  }, []);
   return (
-    <div>
+    <div style={{ padding: "10px" }}>
       <h1>Handson table</h1>
       <HotTable
         filter="true"
@@ -138,33 +138,23 @@ const DateRender = (props, x) => {
   console.log(getDate);
   console.log(props);
   return (
-    <DatePicker
-      style={{
-        flex: 1,
-        alignSelf: "stretch",
-        width: "100%",
-        // height: "200px",
-      }}
-      calendar={persian}
-      locale={persian_fa}
-      calendarPosition="bottom-right"
-      onChange={changeDateHandler}
-      // onChange={(e) => {
-      //   onCellChanged(
-      //     this.getCompatibleCell({
-      //       ...cell,
-      //       text: new DateObject(e.toDate()).format().toString(),
-      //     }),
-      //     true
-      //   );
-      // }}
-
-      // portalTarget={document.body}
-      portal={document.body}
-      onCopy={(e) => e.stopPropagation()}
-      onCut={(e) => e.stopPropagation()}
-      onPaste={(e) => e.stopPropagation()}
-      onPointerDown={(e) => e.stopPropagation()}
-    />
+    // <DatePicker
+    //   style={{
+    //     flex: 1,
+    //     alignSelf: "stretch",
+    //     width: "100%",
+    //     // height: "200px",
+    //   }}
+    //   calendar={persian}
+    //   locale={persian_fa}
+    //   calendarPosition="bottom-right"
+    //   onChange={changeDateHandler}
+    //   portal={document.body}
+    //   onCopy={(e) => e.stopPropagation()}
+    //   onCut={(e) => e.stopPropagation()}
+    //   onPaste={(e) => e.stopPropagation()}
+    //   onPointerDown={(e) => e.stopPropagation()}
+    // />
+    <input type="date" onPointerDown={(e) => e.stopPropagation()} />
   );
 };
