@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSelectValue } from "../../store/datasheetSlice";
 import { customeDateComponent } from "./DateComponent";
 import { CSVDownload, CSVLink } from "react-csv";
+import { customeFaridTextAria } from "./WorkflowNew/FaridTextArea";
 
 //CUSTOME COMPONENT
 const SelectComponent = ({
@@ -142,9 +143,10 @@ const DataSheet = () => {
     setcurrentWidth(localStorage.getItem("col"));
     setcolumns(() => [
       {
+        // ...keyColumn("normal", customeFaridTextAria({})),
         ...keyColumn("normal", textColumn),
         title: "Normal",
-        disabled: true,
+        // disabled: true,
         width: `1 0 ${localStorage.getItem("col")}px`,
       },
       {
@@ -292,7 +294,7 @@ const DataSheet = () => {
           <DynamicDataSheetGrid
             className="data-sheet-grid"
             height={600}
-            // rowHeight={40}
+            rowHeight={40}
             // headerRowHeight={50}
             onBlur={blurHandler}
             value={data}
