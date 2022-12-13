@@ -6,6 +6,7 @@ import { allReducers } from "./store/store";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import "@glideapps/glide-data-grid/dist/index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = createStore(allReducers, compose(applyMiddleware(thunk)));

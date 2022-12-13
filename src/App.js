@@ -14,6 +14,7 @@ import ReactSpreadSheet from "./Components/ReactSpreadSheet/ReactSpreadSheet";
 import GridForFlag from "./Components/ReactGrid/GridForFlag";
 import ReactGridCustom from "./Components/ReactGrid/ReactGridCustom";
 import MyReactDataGrid from "./Components/ReactDataGrid/MyReactDataGrid";
+import Glide from "./Components/Glide/Glide";
 function App() {
   return (
     <div className="App">
@@ -54,6 +55,9 @@ function App() {
       <li>
         <Link to="/react-data-grid">React Data Grid</Link>
       </li>
+      <li>
+        <Link to="/react-glide">React Glide</Link>
+      </li>
       <Routes>
         <Route path="/" element={<DataSheet />} />
         <Route path="/workflow" element={<WorkflowCreate />} />
@@ -67,6 +71,7 @@ function App() {
         <Route path="/work" element={<RealWork />} />
         <Route path="/react-spreadsheet" element={<ReactSpreadSheet />} />
         <Route path="/react-data-grid" element={<MyReactDataGrid />} />
+        <Route path="/react-glide" element={<Glide />} />
         {/* <Route path="about" element={<About />} /> */}
       </Routes>
       {/* <Test /> */}
